@@ -228,6 +228,16 @@ export default function Navbar() {
                       </div>
                       <button
                         onClick={() => {
+                          setCurrentPage('student-dashboard');
+                          setPortalsDropdownOpen(false);
+                        }}
+                        className="w-full text-left px-4 py-2.5 text-xs font-bold text-indigo-600 hover:bg-indigo-50 flex items-center gap-2 transition-colors cursor-pointer border-b border-slate-100"
+                      >
+                        <GraduationCap className="w-4 h-4 text-indigo-600" />
+                        <span>My Student Dashboard</span>
+                      </button>
+                      <button
+                        onClick={() => {
                           logoutStudent();
                           setPortalsDropdownOpen(false);
                         }}
@@ -299,21 +309,30 @@ export default function Navbar() {
           {/* Quick Student Login in Mobile View */}
           <div className="w-full">
             {currentUser ? (
-              <div className="flex items-center justify-between p-2.5 bg-white rounded-xl border border-slate-200">
-                <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xs">
-                    {currentUser.name?.[0]?.toUpperCase() || 'S'}
+              <div className="p-3 bg-white rounded-xl border border-slate-200 space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xs">
+                      {currentUser.name?.[0]?.toUpperCase() || 'S'}
+                    </div>
+                    <div>
+                      <div className="font-bold text-xs text-slate-900">{currentUser.name}</div>
+                      <div className="text-[10px] text-slate-400">Student Account</div>
+                    </div>
                   </div>
-                  <div>
-                    <div className="font-bold text-xs text-slate-900">{currentUser.name}</div>
-                    <div className="text-[10px] text-slate-400">Student Account</div>
-                  </div>
+                  <button
+                    onClick={() => { logoutStudent(); setMobileMenuOpen(false); }}
+                    className="text-xs font-bold text-rose-600 hover:underline cursor-pointer"
+                  >
+                    Sign Out
+                  </button>
                 </div>
                 <button
-                  onClick={() => { logoutStudent(); setMobileMenuOpen(false); }}
-                  className="text-xs font-bold text-rose-600 hover:underline cursor-pointer"
+                  onClick={() => { setCurrentPage('student-dashboard'); setMobileMenuOpen(false); }}
+                  className="w-full py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm cursor-pointer"
                 >
-                  Sign Out
+                  <GraduationCap className="w-4 h-4" />
+                  <span>Open My Student Dashboard</span>
                 </button>
               </div>
             ) : (

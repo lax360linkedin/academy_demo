@@ -33,6 +33,7 @@ import GalleryPage from './pages/GalleryPage';
 import FAQPage from './pages/FAQPage';
 import ContactPage from './pages/ContactPage';
 import CareersPage from './pages/CareersPage';
+import StudentDashboardPage from './pages/StudentDashboardPage';
 import AdminPage from './pages/AdminPage';
 
 function MainContent() {
@@ -79,6 +80,8 @@ function MainContent() {
         return <ContactPage />;
       case 'careers':
         return <CareersPage />;
+      case 'student-dashboard':
+        return <StudentDashboardPage />;
       case 'privacy':
       case 'terms':
       case 'refund':

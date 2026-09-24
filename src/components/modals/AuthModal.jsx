@@ -27,7 +27,8 @@ export default function AuthModal() {
     openCourseDetails, 
     openModal,
     hasUnderstoodTerms,
-    openLegalModal
+    openLegalModal,
+    setCurrentPage
   } = useApp();
   const [tab, setTab] = useState('register'); // 'login' | 'register' | 'forgot'
   const [forgotEmail, setForgotEmail] = useState('');
@@ -177,13 +178,15 @@ export default function AuthModal() {
     showToast(`Welcome back, ${userName}! Student login successful 🎉`, 'success');
     closeModal();
 
-    // If enrolling in a course: return to course and show confirmation
+    // If enrolling in a course: return to course and show confirmation, else open student dashboard
     if (modalData?.targetCourse) {
       const target = modalData.targetCourse;
       openCourseDetails(target.id);
       setTimeout(() => {
         openModal('enroll-confirmation', target);
       }, 200);
+    } else {
+      setCurrentPage('student-dashboard');
     }
   };
 
@@ -222,13 +225,15 @@ export default function AuthModal() {
     showToast(`Registration Successful! Welcome to Nexus Academy, ${regData.fullName} 🎉`, 'success');
     closeModal();
 
-    // If enrolling in a course: return to course and show confirmation
+    // If enrolling in a course: return to course and show confirmation, else open student dashboard
     if (modalData?.targetCourse) {
       const target = modalData.targetCourse;
       openCourseDetails(target.id);
       setTimeout(() => {
         openModal('enroll-confirmation', target);
       }, 200);
+    } else {
+      setCurrentPage('student-dashboard');
     }
   };
 

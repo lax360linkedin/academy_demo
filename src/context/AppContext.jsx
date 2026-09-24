@@ -34,8 +34,30 @@ const DEFAULT_NOTIFICATIONS = [
   }
 ];
 
+const detectInitialPage = () => {
+  try {
+    const rawPath = (window.location.pathname || '').toLowerCase().replace(/^\/+|\/+$/g, '');
+    const rawHash = (window.location.hash || '').toLowerCase().replace(/^#\/?/, '').replace(/\/+$/, '');
+    const rawSearch = (window.location.search || '').toLowerCase();
+
+    if (rawPath === 'admin' || rawHash === 'admin' || rawSearch.includes('admin') || rawSearch.includes('page=admin')) {
+      return 'admin';
+    }
+    if (rawPath === 'student-dashboard' || rawPath === 'dashboard' || rawHash === 'student-dashboard' || rawHash === 'dashboard') {
+      return 'student-dashboard';
+    }
+    const validPages = [
+      'about', 'courses', 'course-details', 'programs', 'faculty', 
+      'admissions', 'events', 'blog', 'testimonials', 'gallery', 
+      'faq', 'contact', 'careers'
+    ];
+    if (validPages.includes(rawPath)) return rawPath;
+  } catch (e) {}
+  return 'home';
+};
+
 export const AppProvider = ({ children }) => {
-  const [currentPage, setCurrentPage] = useState('home');
+  const [currentPage, setCurrentPage] = useState(detectInitialPage);
   const [selectedCourseId, setSelectedCourseId] = useState('cs-101');
 
   // Shared Dynamic Courses Catalog (Synchronized between Admin & Website, persisted to localStorage)
@@ -209,26 +231,14 @@ export const AppProvider = ({ children }) => {
     body.classList.remove('dark');
     localStorage.removeItem('nexus_theme');
 
-    const checkAdminInUrl = () => {
-      const hash = (window.location.hash || '').toLowerCase();
-      const search = (window.location.search || '').toLowerCase();
-      const path = (window.location.pathname || '').toLowerCase();
-
-      if (
-        hash === '#admin' ||
-        hash.includes('admin') ||
-        search.includes('admin') ||
-        search.includes('page=admin') ||
-        search.includes('search=admin') ||
-        path.endsWith('/admin')
-      ) {
-        setCurrentPage('admin');
-      }
+    const checkRouteInUrl = () => {
+      const page = detectInitialPage();
+      setCurrentPage(page);
     };
 
-    checkAdminInUrl();
-    window.addEventListener('hashchange', checkAdminInUrl);
-    window.addEventListener('popstate', checkAdminInUrl);
+    checkRouteInUrl();
+    window.addEventListener('hashchange', checkRouteInUrl);
+    window.addEventListener('popstate', checkRouteInUrl);
 
     // Sync state across browser tabs
     const handleStorageChange = (e) => {
@@ -251,8 +261,8 @@ export const AppProvider = ({ children }) => {
     window.addEventListener('storage', handleStorageChange);
 
     return () => {
-      window.removeEventListener('hashchange', checkAdminInUrl);
-      window.removeEventListener('popstate', checkAdminInUrl);
+      window.removeEventListener('hashchange', checkRouteInUrl);
+      window.removeEventListener('popstate', checkRouteInUrl);
       window.removeEventListener('storage', handleStorageChange);
     };
   }, []);
@@ -408,15 +418,24 @@ export const AppProvider = ({ children }) => {
 
     if (page === 'admin') {
       if (window.location.pathname !== '/admin') {
-        window.history.pushState(null, '', '/admin');
+        window.history.pushState({ page: 'admin' }, '', '/admin');
+      }
+    } else if (page === 'student-dashboard') {
+      if (window.location.pathname !== '/student-dashboard') {
+        window.history.pushState({ page: 'student-dashboard' }, '', '/student-dashboard');
       }
     } else {
-      // If we are currently showing /admin, #admin, or query admin, clean the URL back to '/'
+      // If we are currently showing /admin or /student-dashboard, clean URL back to '/'
       const currentPath = window.location.pathname.toLowerCase();
       const currentHash = window.location.hash.toLowerCase();
       const currentSearch = window.location.search.toLowerCase();
-      if (currentPath.endsWith('/admin') || currentHash.includes('admin') || currentSearch.includes('admin')) {
-        window.history.pushState(null, '', '/');
+      if (
+        currentPath.endsWith('/admin') || 
+        currentPath.endsWith('/student-dashboard') || 
+        currentHash.includes('admin') || 
+        currentSearch.includes('admin')
+      ) {
+        window.history.pushState({ page }, '', '/');
       }
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
