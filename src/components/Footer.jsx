@@ -92,8 +92,7 @@ export default function Footer() {
               { id: 'blog', label: 'Blog & Industry News' },
               { id: 'gallery', label: 'Campus Gallery' },
               { id: 'faq', label: 'Help & FAQ' },
-              { id: 'careers', label: 'Career Center' },
-              { id: 'admin', label: 'Admin Portal & Login' }
+              { id: 'careers', label: 'Career Center' }
             ].map((item) => (
               <li key={item.id}>
                 <button
@@ -191,7 +190,6 @@ export default function Footer() {
             <button type="button" onClick={() => openLegalModal('disclaimer')} className="hover:text-amber-400 transition-colors cursor-pointer">Disclaimer</button>
             <button type="button" onClick={openPrivacyCenter} className="hover:text-amber-400 transition-colors cursor-pointer">Privacy Center</button>
             <button type="button" onClick={() => openCookieBanner(true)} className="hover:text-amber-400 transition-colors cursor-pointer">Cookie Settings</button>
-            <button type="button" onClick={() => { setCurrentPage('admin'); window.scrollTo(0, 0); }} className="hover:text-amber-400 font-bold text-indigo-300 transition-colors cursor-pointer">Admin Portal</button>
           </div>
         </div>
       </div>

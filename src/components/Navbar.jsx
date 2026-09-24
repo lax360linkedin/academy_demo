@@ -48,7 +48,6 @@ export default function Navbar() {
     { id: 'faq', label: 'FAQ' },
     { id: 'contact', label: 'Contact Us' },
     { id: 'careers', label: 'Careers' },
-    { id: 'admin', label: 'Admin Portal' },
     { id: 'privacy', label: 'Privacy Policy' },
     { id: 'terms', label: 'Terms & Conditions' },
     { id: 'disclaimer', label: 'Disclaimer' },
@@ -75,7 +74,7 @@ export default function Navbar() {
   };
 
   return (
-    <header className="navbar bg-blue-50/95 border-b border-blue-200/80 sticky top-0 z-40 w-full shadow-sm max-w-full overflow-hidden">
+    <header className="navbar bg-blue-50/95 border-b border-blue-200/80 sticky top-0 z-40 w-full shadow-sm">
       <div className="w-full px-2.5 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20 w-full gap-2 sm:gap-4">
           
